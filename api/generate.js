@@ -1,5 +1,5 @@
 const path = require("path");
-const { createCanvas, loadImage, registerFont } = require("@napi-rs/canvas");
+const { createCanvas, loadImage, registerFont, GlobalFonts } = require("@napi-rs/canvas");
 const fs = require("fs");
 
 function num(query, key, fallback) {
@@ -54,9 +54,17 @@ function ensureFonts() {
     return;
   }
 
-  registerFont(regular, { family: "Open Sans", weight: "400" });
-  registerFont(semibold, { family: "Open Sans", weight: "600" });
-  registerFont(bold, { family: "Open Sans", weight: "700" });
+  if (typeof registerFont === "function") {
+    registerFont(regular, { family: "Open Sans", weight: "400" });
+    registerFont(semibold, { family: "Open Sans", weight: "600" });
+    registerFont(bold, { family: "Open Sans", weight: "700" });
+  } else if (GlobalFonts && typeof GlobalFonts.registerFromPath === "function") {
+    GlobalFonts.registerFromPath(regular, "Open Sans");
+    GlobalFonts.registerFromPath(semibold, "Open Sans");
+    GlobalFonts.registerFromPath(bold, "Open Sans");
+  } else {
+    console.warn("Font registration is not available in this runtime.");
+  }
   fontsRegistered = true;
 }
 
