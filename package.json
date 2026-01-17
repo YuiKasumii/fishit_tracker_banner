@@ -7,6 +7,9 @@
     "dev": "vercel dev",
     "start": "node api/generate.js"
   },
+  "engines": {
+    "node": "18.x"
+  },
   "dependencies": {
     "@napi-rs/canvas": "^0.1.58"
   }
