@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>PNG Generator</title>
+    <link rel="stylesheet" href="/style.css" />
+  </head>
+  <body>
+    <main class="page">
+      <section class="panel">
+        <h1>PNG Generator</h1>
+        <p>Change params, then copy the image URL to use in <code>&lt;img&gt;</code>.</p>
+
+        <form id="form">
+          <div class="row">
+            <label>Player</label>
+            <input name="player" value="Big Frostborn Sharks" />
+          </div>
+          <div class="row">
+            <label>Fish</label>
+            <input name="fish" value="Shark Megalodon BIG" />
+          </div>
+          <div class="row">
+            <label>Weight</label>
+            <input name="weight" value="WEIGHT" />
+          </div>
+          <div class="row">
+            <label>Mutation</label>
+            <input name="mutation" value="MUTATION" />
+          </div>
+          <div class="row">
+            <label>Circle Image URL</label>
+            <input name="circleUrl" placeholder="https://..." />
+          </div>
+          <div class="row">
+            <label>Square Image URL</label>
+            <input name="squareUrl" placeholder="https://..." />
+          </div>
+          <div class="row">
+            <label>Label BG</label>
+            <input name="labelBg" value="#2b3360" />
+          </div>
+          <div class="row">
+            <label>Value BG</label>
+            <input name="valueBg" value="#000000" />
+          </div>
+          <div class="row">
+            <label>Circle Fill</label>
+            <input name="circleFill" value="#333333" />
+          </div>
+          <div class="row">
+            <label>Square Fill</label>
+            <input name="squareFill" value="#333333" />
+          </div>
+
+          <button type="submit">Update Preview</button>
+        </form>
+
+        <div class="url">
+          <label>Image URL</label>
+          <input id="imageUrl" readonly />
+        </div>
+      </section>
+
+      <section class="preview">
+        <img id="preview" alt="Preview" />
+      </section>
+    </main>
+
+    <script src="/app.js"></script>
+  </body>
+</html>

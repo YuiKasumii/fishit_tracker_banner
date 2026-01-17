@@ -1,0 +1,13 @@
+{
+  "name": "overlay-image",
+  "private": true,
+  "version": "1.0.0",
+  "type": "commonjs",
+  "scripts": {
+    "dev": "vercel dev",
+    "start": "node api/generate.js"
+  },
+  "dependencies": {
+    "@napi-rs/canvas": "^0.1.58"
+  }
+}
