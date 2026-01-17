@@ -70,7 +70,11 @@ module.exports = async (req, res) => {
     const labelColor = color(query, "labelColor", "#ffffff");
     const valueColor = color(query, "valueColor", "#ffffff");
 
-    const fontFamily = str(query, "font", "Arial");
+    const fontFamilyRaw = str(query, "font", "sans-serif");
+    const fontFamily =
+      fontFamilyRaw.includes(",") || fontFamilyRaw.includes("sans-serif")
+        ? fontFamilyRaw
+        : `${fontFamilyRaw}, sans-serif`;
     const labelFont = num(query, "labelSize", 24);
     const valueFont = num(query, "valueSize", 24);
 
