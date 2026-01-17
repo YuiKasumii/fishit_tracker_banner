@@ -1,6 +1,7 @@
 {
   "functions": {
     "api/*.js": {
+      "includeFiles": "fonts/*.ttf",
       "maxDuration": 10
     }
   }

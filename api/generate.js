@@ -1,5 +1,6 @@
 const path = require("path");
 const { createCanvas, loadImage, registerFont } = require("@napi-rs/canvas");
+const fs = require("fs");
 
 function num(query, key, fallback) {
   const v = Number(query[key]);
@@ -42,18 +43,20 @@ let fontsRegistered = false;
 
 function ensureFonts() {
   if (fontsRegistered) return;
-  registerFont(path.join(fontDir, "OpenSans-Regular.ttf"), {
-    family: "Open Sans",
-    weight: "400"
-  });
-  registerFont(path.join(fontDir, "OpenSans-SemiBold.ttf"), {
-    family: "Open Sans",
-    weight: "600"
-  });
-  registerFont(path.join(fontDir, "OpenSans-Bold.ttf"), {
-    family: "Open Sans",
-    weight: "700"
-  });
+  const regular = path.join(fontDir, "OpenSans-Regular.ttf");
+  const semibold = path.join(fontDir, "OpenSans-SemiBold.ttf");
+  const bold = path.join(fontDir, "OpenSans-Bold.ttf");
+
+  const missing = [regular, semibold, bold].filter((file) => !fs.existsSync(file));
+  if (missing.length) {
+    console.warn("Missing font files:", missing);
+    fontsRegistered = true;
+    return;
+  }
+
+  registerFont(regular, { family: "Open Sans", weight: "400" });
+  registerFont(semibold, { family: "Open Sans", weight: "600" });
+  registerFont(bold, { family: "Open Sans", weight: "700" });
   fontsRegistered = true;
 }
 
