@@ -217,7 +217,9 @@ module.exports = async (req, res) => {
     const png = canvas.toBuffer("image/png");
     res.status(200).end(png);
   } catch (err) {
+    console.error("Generate error:", err);
     res.status(500).setHeader("Content-Type", "text/plain");
-    res.end("Failed to generate image.");
+    const message = err && err.stack ? err.stack : String(err);
+    res.end(`Failed to generate image.\n\n${message}`);
   }
 };
