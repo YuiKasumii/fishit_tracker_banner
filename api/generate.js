@@ -1,5 +1,5 @@
 const path = require("path");
-const { createCanvas, loadImage } = require("@napi-rs/canvas");
+const { createCanvas, loadImage, registerFont } = require("@napi-rs/canvas");
 
 function num(query, key, fallback) {
   const v = Number(query[key]);
@@ -37,8 +37,29 @@ async function loadImageSafe(url) {
   }
 }
 
+const fontDir = path.join(__dirname, "..", "fonts");
+let fontsRegistered = false;
+
+function ensureFonts() {
+  if (fontsRegistered) return;
+  registerFont(path.join(fontDir, "OpenSans-Regular.ttf"), {
+    family: "Open Sans",
+    weight: "400"
+  });
+  registerFont(path.join(fontDir, "OpenSans-SemiBold.ttf"), {
+    family: "Open Sans",
+    weight: "600"
+  });
+  registerFont(path.join(fontDir, "OpenSans-Bold.ttf"), {
+    family: "Open Sans",
+    weight: "700"
+  });
+  fontsRegistered = true;
+}
+
 module.exports = async (req, res) => {
   try {
+    ensureFonts();
     const query = req.query || {};
 
     const bgParam = str(query, "bg", "");
@@ -70,13 +91,15 @@ module.exports = async (req, res) => {
     const labelColor = color(query, "labelColor", "#ffffff");
     const valueColor = color(query, "valueColor", "#ffffff");
 
-    const fontFamilyRaw = str(query, "font", "sans-serif");
+    const fontFamilyRaw = str(query, "font", "Open Sans");
     const fontFamily =
       fontFamilyRaw.includes(",") || fontFamilyRaw.includes("sans-serif")
         ? fontFamilyRaw
         : `${fontFamilyRaw}, sans-serif`;
     const labelFont = num(query, "labelSize", 24);
     const valueFont = num(query, "valueSize", 24);
+    const labelWeight = num(query, "labelWeight", 700);
+    const valueWeight = num(query, "valueWeight", 600);
 
     const labels = [
       str(query, "l1", "PLAYER"),
@@ -107,11 +130,11 @@ module.exports = async (req, res) => {
       ctx.textBaseline = "middle";
 
       ctx.fillStyle = labelColor;
-      ctx.font = `${labelFont}px ${fontFamily}`;
+      ctx.font = `${labelWeight} ${labelFont}px ${fontFamily}`;
       ctx.fillText(labels[i], labelX + labelW / 2, y + barHeight / 2);
 
       ctx.fillStyle = valueColor;
-      ctx.font = `${valueFont}px ${fontFamily}`;
+      ctx.font = `${valueWeight} ${valueFont}px ${fontFamily}`;
       ctx.fillText(values[i], valueX + valueW / 2, y + barHeight / 2);
     }
 
